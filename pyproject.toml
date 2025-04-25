@@ -1,0 +1,49 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "cess"
+version = "0.1.0"
+authors = [
+    {name = "cess", email = "info@cess-solutions.de"},
+]
+description = "High-performance matrix multiplication benchmark toolkit"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"  # Changed to SPDX identifier
+
+dependencies = [
+    "numpy>=1.21.0",
+    "scipy>=1.7.0",
+    "tqdm>=4.0.0",
+]
+
+[project.optional-dependencies]  # Proper optional dependencies structure
+gpu = [
+    "cupy>=10.0.0",
+    "pyopencl>=2021.1",
+]
+bench = [
+    "memory_profiler>=0.60",
+]
+
+[project.urls]
+Homepage = "https://github.com/Cess-solutions/xpu"
+Issues = "https://github.com/Cess-solutions/xpu/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src"]
+
+[tool.ruff]
+ignore = ["F841"]
+
+[tool.isort]
+lines_after_imports = 2
+
+[tool.uv.sources]
+torch = [{ index = "pytorch" }]
+
+[[tool.uv.index]]
+name = "pytorch"
+url = "https://download.pytorch.org/whl/cu126"
