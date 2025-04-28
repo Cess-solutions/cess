@@ -36,7 +36,20 @@ Issues = "https://github.com/Cess-solutions/xpu/issues"
 packages = ["src"]
 
 [tool.ruff]
-ignore = ["F841"]
+line-length = 120
+select = [
+    "E",   # Pycodestyle errors
+    "F",   # Pyflakes
+    "I",   # Isort
+    "UP",  # Pyupgrade
+    "W",   # Pycodestyle warnings
+]
+ignore = [
+    "E501",  # Line too long (handled by formatter)
+]
+
+[tool.ruff.format]
+docstring-code-format = true
 
 [tool.isort]
 lines_after_imports = 2
