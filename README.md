@@ -73,7 +73,7 @@ docker build -f docker/Dockerfile.gpu -t cess-gpu .
 - **Run container**
 
 ```bash 
-docker run --rm cess-cpu  # or cess-gpu with NVIDIA runtime
+docker run --rm cess-cpu  #or cess-gpu with NVIDIA runtime
 ```
 
 ## 🛠️ Development
