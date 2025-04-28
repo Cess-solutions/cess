@@ -1,19 +1,34 @@
-# Use NVIDIA CUDA image with Python 3.12
+# Use NVIDIA CUDA base image
 FROM nvidia/cuda:12.4.0-base-ubuntu22.04
 
-# Install Python 3.12
+# Install Python 3.12 build dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    software-properties-common \
-    && add-apt-repository ppa:deadsnakes/ppa \
-    && apt-get install -y \
-    python3.12 \
-    python3.12-dev \
-    python3.12-distutils \
+    wget \
+    build-essential \
+    zlib1g-dev \
+    libncurses5-dev \
+    libgdbm-dev \
+    libnss3-dev \
+    libssl-dev \
+    libreadline-dev \
+    libffi-dev \
+    libsqlite3-dev \
+    libbz2-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# Make Python 3.12 the default
-RUN update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.12 1 \
-    && ln -fs /usr/bin/python3.12 /usr/local/bin/python
+# Download and compile Python 3.12
+RUN wget https://www.python.org/ftp/python/3.12.0/Python-3.12.0.tgz \
+    && tar -xf Python-3.12.0.tgz \
+    && cd Python-3.12.0 \
+    && ./configure --enable-optimizations \
+    && make -j$(nproc) \
+    && make altinstall \
+    && cd .. \
+    && rm -rf Python-3.12.0.tgz Python-3.12.0
+
+# Create symbolic links
+RUN ln -sf /usr/local/bin/python3.12 /usr/local/bin/python \
+    && ln -sf /usr/local/bin/pip3.12 /usr/local/bin/pip
 
 # Set environment variables
 ENV PYTHONDONTWRITEBYTECODE=1 \
@@ -21,25 +36,21 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PIP_NO_CACHE_DIR=1 \
     LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH
 
-# Install pip
-RUN curl -sS https://bootstrap.pypa.io/get-pip.py | python3.12
-
-# Set working directory
 WORKDIR /app
 
-# Copy dependency specifications
-COPY pyproject.toml ./
+# First copy only requirements to leverage Docker cache
+COPY pyproject.toml .
 
-# Install PyTorch with CUDA 12.1 and project dependencies
-RUN pip install --upgrade pip && \
-    pip install --no-cache-dir torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121 && \
-    pip install --no-cache-dir -e .
+# Install PyTorch with CUDA 12.1 first
+RUN pip install --no-cache-dir torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
 
-# Copy application code
+# Then copy the rest of the application
 COPY . .
 
-# Health check for GPU
-HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
-    CMD python -c "import torch; print('CUDA available:', torch.cuda.is_available())"
+# Install project in development mode
+RUN pip install --no-cache-dir -e .
+
+# Verify CUDA is working
+RUN python -c "import torch; print(f'CUDA available: {torch.cuda.is_available()}'); print(f'PyTorch version: {torch.__version__}')"
 
 ENTRYPOINT ["python", "-m", "src.xpu"]
