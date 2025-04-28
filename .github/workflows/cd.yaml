@@ -7,6 +7,9 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        variant: ["cpu", "gpu"]
     steps:
       - uses: actions/checkout@v4
       
@@ -19,7 +22,7 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_TOKEN }}
       
-      - name: Build and Push Production Images
+      - name: Build and Push Docker Images
         uses: docker/build-push-action@v4
         with:
           context: .
@@ -31,8 +34,6 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      - name: Notify Deployment
+      - name: Verify Deployment
         run: |
-          echo "✅ Successfully deployed:"
-          echo "CPU Image: ${{ secrets.DOCKER_HUB_USERNAME }}/your-repo:latest-cpu"
-          echo "GPU Image: ${{ secrets.DOCKER_HUB_USERNAME }}/your-repo:latest-gpu"
+          echo "✅ Successfully deployed ${{ matrix.variant }} image"
