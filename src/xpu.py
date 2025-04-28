@@ -122,7 +122,7 @@ class XPU:
             results["Hybrid"] = self.hybrid(size)
 
         # Print results
-        print("{:<20} {:<15}".format("Configuration", "Time per matmul (s)"))
+        print("{:<20} {:<15}".format("Configuration", "Time per operation (s)"))
         print("-" * 35)
         for config, time_val in results.items():
             if not np.isnan(time_val):
