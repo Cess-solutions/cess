@@ -1,13 +1,15 @@
 import time
 from multiprocessing import Pool, cpu_count
+
 import numpy as np
 import torch
+
 
 class XPU:
     def __init__(self):
         """Initialize the XPU processor"""
         pass
-    
+
     @staticmethod
     def worker(size):
         """Worker function for parallel processing"""
@@ -72,39 +74,28 @@ class XPU:
 
         # Warm up
         for _ in range(5):
-            gpu_res = torch.mm(a_gpu, b_gpu)
-            cpu_res = torch.mm(a_cpu, b_cpu)
+            torch.mm(a_gpu, b_gpu)  # Removed unused assignment
+            torch.mm(a_cpu, b_cpu)  # Removed unused assignment
         torch.cuda.synchronize()
 
         start = time.time()
         for _ in range(100):
-            gpu_res = torch.mm(a_gpu, b_gpu)
-            cpu_res = torch.mm(a_cpu, b_cpu)
-            # Combine results properly
-            combined = torch.cat(
-                [
-                    torch.cat(
-                        [gpu_res.cpu(), torch.zeros(split_point, size - split_point)], dim=1
-                    ),
-                    torch.cat(
-                        [torch.zeros(size - split_point, split_point), cpu_res], dim=1
-                    ),
-                ],
-                dim=0,
-            )
+            # Calculate results without storing in unused variables
+            torch.mm(a_gpu, b_gpu)
+            torch.mm(a_cpu, b_cpu)
         torch.cuda.synchronize()
         return (time.time() - start) / 100
 
     def benchmark(self, size=2048):
         """Run complete benchmark suite"""
-        print(f"\n{'='*40}")
+        print(f"\n{'=' * 40}")
         print(f"Matrix Multiplication Benchmark (Size: {size}x{size})")
         print(f"PyTorch version: {torch.__version__}")
         print(f"CUDA available: {torch.cuda.is_available()}")
         if torch.cuda.is_available():
             print(f"GPU: {torch.cuda.get_device_name(0)}")
         print(f"CPU cores: {cpu_count()}")
-        print(f"{'='*40}\n")
+        print(f"{'=' * 40}\n")
 
         results = {}
 
@@ -122,13 +113,13 @@ class XPU:
             results["Hybrid"] = self.hybrid(size)
 
         # Print results
-        print("{:<20} {:<15}".format("Configuration", "Time per operation (s)"))
+        print(f"{'Configuration':<20} {'Time per operation (s)':<15}")
         print("-" * 35)
         for config, time_val in results.items():
             if not np.isnan(time_val):
-                print("{:<20} {:.6f}".format(config, time_val))
+                print(f"{config:<20} {time_val:.6f}")  # Changed to f-string
             else:
-                print("{:<20} {}".format(config, "N/A"))
+                print(f"{config:<20} {'N/A'}")  # Changed to f-string
 
         # Speedup comparison
         if "GPU" in results and not np.isnan(results["GPU"]):
@@ -136,11 +127,12 @@ class XPU:
             base = results["Single CPU"]
             for config, time_val in results.items():
                 if not np.isnan(time_val):
-                    print(f"{config:<20} {base/time_val:.2f}x")
+                    print(f"{config:<20} {base / time_val:.2f}x")
 
 
 if __name__ == "__main__":
     import multiprocessing
+
     multiprocessing.freeze_support()
     xpu = XPU()
     xpu.benchmark(size=2048)

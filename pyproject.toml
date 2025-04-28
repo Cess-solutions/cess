@@ -36,23 +36,15 @@ Issues = "https://github.com/Cess-solutions/xpu/issues"
 packages = ["src"]
 
 [tool.ruff]
-line-length = 120
-select = [
-    "E",   # Pycodestyle errors
-    "F",   # Pyflakes
-    "I",   # Isort
-    "UP",  # Pyupgrade
-    "W",   # Pycodestyle warnings
-]
-ignore = [
-    "E501",  # Line too long (handled by formatter)
-]
+line-length = 120  # Moved to lint section
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "W"]
+ignore = ["E501"]
+
 
 [tool.ruff.format]
 docstring-code-format = true
-
-[tool.isort]
-lines_after_imports = 2
 
 [tool.uv.sources]
 torch = [{ index = "pytorch" }]
