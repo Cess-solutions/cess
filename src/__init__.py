@@ -1,5 +1,5 @@
 __version__ = "0.1.0"
 
-from .model import benchmark
+from .xpu import XPU
 
-__all__ = ['benchmark']
+__all__ = ['XPU']
