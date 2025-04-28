@@ -37,9 +37,11 @@ jobs:
       
       - name: Verify Dockerfiles exist
         run: |
+          echo "Current directory: $(pwd)"
+          echo "Dockerfiles found:"
+          ls -la docker/Dockerfile.* || true
           if [ ! -f "docker/Dockerfile.${{ matrix.variant }}" ]; then
             echo "::error::docker/Dockerfile.${{ matrix.variant }} not found!"
-            ls -la docker/
             exit 1
           fi
       
@@ -49,8 +51,8 @@ jobs:
       - name: Build Docker Images
         uses: docker/build-push-action@v4
         with:
-          context: docker/
-          file: Dockerfile.${{ matrix.variant }}
+          context: .
+          file: docker/Dockerfile.${{ matrix.variant }}
           tags: |
             your-repo-ci:${{ github.sha }}-${{ matrix.variant }}
           cache-from: type=gha
