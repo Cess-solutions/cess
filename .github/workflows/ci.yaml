@@ -37,21 +37,19 @@ jobs:
       
       - name: Verify Dockerfiles exist
         run: |
-          if [ ! -f "Dockerfile.${{ matrix.variant }}" ]; then
-            echo "❌ Error: Dockerfile.${{ matrix.variant }} not found!"
-            ls -la
+          if [ ! -f "docker/Dockerfile.${{ matrix.variant }}" ]; then
+            echo "::error::docker/Dockerfile.${{ matrix.variant }} not found!"
+            ls -la docker/
             exit 1
           fi
       
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
-        with:
-          install: true
       
       - name: Build Docker Images
         uses: docker/build-push-action@v4
         with:
-          context: .
+          context: docker/
           file: Dockerfile.${{ matrix.variant }}
           tags: |
             your-repo-ci:${{ github.sha }}-${{ matrix.variant }}
