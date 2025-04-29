@@ -23,6 +23,7 @@ Uses **NumPy**, **PyTorch**, and Python's `multiprocessing` for optimized comput
 - **Multicore CPU** (for parallel processing)
 
 ### 1. Install dependencies
+
 ```bash
 pip install torch numpy
 ```
@@ -43,17 +44,20 @@ source venv/bin/activate  # Linux/Mac
 ```
 
 - **Install in development mode**
+
 ```bash
 pip install -e .
 ```
 ## 🚀 Advanced Options
 
 - **Run with custom matrix size (e.g., 1024x1024)**
+
 ```bash
 python app.py --size 1024
 ```
 
 - **Run specific processing method only:**
+
 ```bash
 python app.py --method gpu  # Options: cpu, multicpu, gpu, hybrid
 ```
@@ -61,11 +65,13 @@ python app.py --method gpu  # Options: cpu, multicpu, gpu, hybrid
 ## Docker Support (Optional)
 
 - **For CPU-only version:**
+
 ```bash 
 docker build -f docker/Dockerfile.cpu -t cess-cpu .
 ```
 
 - **For GPU-accelerated version:**
+
 ```bash 
 docker build -f docker/Dockerfile.gpu -t cess-gpu .
 ```
@@ -81,10 +87,12 @@ docker run --rm cess-cpu  #or cess-gpu with NVIDIA runtime
 To contribute:
 
 - **Install development dependencies**
+
 ```bash
 pip install -e ".[dev]"
 ```
 - **Run tests**
+
 ```bash 
 pytest tests/
 ```
