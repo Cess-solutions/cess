@@ -45,8 +45,8 @@ jobs:
           file: docker/Dockerfile.${{ matrix.variant }}
           push: true
           tags: |
-            ${{ secrets.DOCKER_HUB_USERNAME }}/your-repo:latest-${{ matrix.variant }}
-            ${{ secrets.DOCKER_HUB_USERNAME }}/your-repo:${{ github.sha }}-${{ matrix.variant }}
+            ${{ secrets.DOCKER_HUB_USERNAME }}/cess:latest-${{ matrix.variant }}
+            ${{ secrets.DOCKER_HUB_USERNAME }}/cess:${{ github.sha }}-${{ matrix.variant }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
           build-args: |
