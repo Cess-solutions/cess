@@ -115,7 +115,7 @@ MIT License. Free for academic and commercial use.
 ## 🔗 Links
 
 - [PyTorch Docs](https://pytorch.org/docs/stable/generated/torch.mm.html)
-- [NumPy xpu](https://numpy.org/doc/stable/reference/generated/numpy.xml.html)
+- [NumPy](https://numpy.org/doc/stable/reference/generated/numpy.xml.html)
 
 ### 🎯 Key Takeaway
 
