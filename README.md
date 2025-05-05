@@ -1,6 +1,7 @@
 # Matrix Multiplication Benchmark (CPU vs GPU vs Hybrid)
 
 A Python benchmark comparing matrix multiplication performance across:
+
 - **Single-Core CPU**
 - **Multi-Core CPU (Parallelized)**
 - **GPU (CUDA)**
