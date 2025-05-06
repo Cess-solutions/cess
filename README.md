@@ -7,7 +7,7 @@ A Python benchmark comparing matrix multiplication performance across:
 - **GPU (CUDA)**
 - **Hybrid (CPU + GPU)**
 
-Uses **NumPy**, **PyTorch**, and Python's `multiprocessing` for optimized computations.
+Uses **NumPy**, **PyTorch**, and Python's `multiprocessing` for optimized computations...
 
 ## 🚀 Features
 - **Automatic hardware detection** (CPU cores, GPU availability)
