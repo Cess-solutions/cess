@@ -118,6 +118,6 @@ MIT License. Free for academic and commercial use...
 - [PyTorch](https://pytorch.org/docs/stable/generated/torch.mm.html)
 - [NumPy](https://numpy.org/doc/stable/reference/generated/numpy.xml.html)
 
-### 🎯 Key Takeaway
+### 🎯 Key Takeaway.
 
-This benchmark helps **choose the best hardware** for matrix-heavy workloads (AI, simulations, etc.)
+This benchmark helps **choose the best hardware** for matrix-heavy workloads (AI, simulations, etc...)
