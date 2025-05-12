@@ -111,7 +111,7 @@ pytest tests/
 
 ## 📜 License
 
-MIT License. Free for academic and commercial use...
+MIT License. Free for academic and commercial use.
 
 ## 🔗 Links
 
