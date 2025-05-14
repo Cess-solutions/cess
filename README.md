@@ -120,4 +120,4 @@ MIT License. Free for academic and commercial use.
 
 ### 🎯 Key Takeaway.
 
-This benchmark helps **choose the best hardware** for matrix-heavy workloads (AI, simulations, etc...)
+This benchmark helps **choose the best hardware** for matrix-heavy workloads (AI, simulations, etc.)
